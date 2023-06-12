@@ -18,6 +18,5 @@ def generate_captcha(text, save_path) -> None:
     image = image_captcha.generate(bidi_text)
     redis_connection.set(uid, text, ex=120)
     image_path = os.path.join(save_path, f"{uid}.png")
-    print(f'uid: {uid}, captcha_text: {text}')
     with open(image_path, 'wb') as f:
         f.write(image.getvalue())

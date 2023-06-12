@@ -18,12 +18,7 @@ class CreateAndVerifyCaptcha(generics.RetrieveAPIView):
         captcha = request.data.get("captcha")
         uid = request.data.get("uid")
         cached_captcha = redis_connection.get(uid)
-        print(f"post_uid: {uid}", type(uid))
-        print(f"post_captcha: {captcha}", type(captcha))
-        print(f"cached_captcha: {cached_captcha}", type(cached_captcha))
-        print(f"keys:{redis_connection.keys(), type(redis_connection.keys())}")
-        if cached_captcha == captcha:
-            redis_connection.delete(uid)
-            return Response({'message': 'Captcha verification successful'})
         redis_connection.delete(uid)
+        if cached_captcha == captcha:
+            return Response({'message': 'Captcha verification successful'})
         return Response({'message': 'Captcha verification failed. Please try again'})
